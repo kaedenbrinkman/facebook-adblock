@@ -1,0 +1,21 @@
+{
+  "name": "Facebook AdBlock",
+  "manifest_version": 3,
+  "version": "1.0",
+  "description": "Block Facebook ads",
+  "permissions": [
+    "activeTab"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.facebook.com/*"
+      ],
+      "js": [
+        "adblock.js"
+      ],
+      "run_at": "document_end",
+      "all_frames": true
+    }
+  ]
+}
