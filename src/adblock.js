@@ -1,16 +1,25 @@
 console.log("adblock.js Started .. ");
 let POST_CLASS = ".x1lliihq";
 function findPostClass() {
-  const feed = document.querySelector("div[role='feed']")?.lastChild;
-  if (!feed) { console.log("Feed not found"); return; }
-  // get first element with a class (first post)
-  const firstPost = feed.querySelector("[class]");
-  POST_CLASS = "." + firstPost.classList[0];
-  console.log("POST_CLASS: " + POST_CLASS);
-  chrome.runtime.sendMessage("nhcmdmbjbjdchgnalicfnicjiggfdoje", { action: "find_post_class", class: POST_CLASS }, console.log);
-  clearInterval(postClassInterval);
-  startAdBlock();
-  setInterval(startAdBlock, 5000);
+  // get h3 with content "News feed posts"
+  const h3s = document.querySelectorAll("h3");
+  for (let i = 0; i < h3s.length; i++) {
+    const h3 = h3s[i];
+    if (h3.innerText === "News Feed posts") {
+      const feed = h3.nextElementSibling;
+      if (!feed) return;
+      // get first element with a class (first post)
+      const firstPost = feed.querySelector("[class]");
+      POST_CLASS = "." + firstPost.classList[0];
+      console.log("POST_CLASS: " + POST_CLASS);
+      chrome.runtime.sendMessage("nhcmdmbjbjdchgnalicfnicjiggfdoje", { action: "find_post_class", class: POST_CLASS }, console.log);
+      clearInterval(postClassInterval);
+      startAdBlock();
+      setInterval(startAdBlock, 5000);
+      return;
+    }
+  }
+  console.log("Feed not found");
 }
 let postClassInterval = setInterval(findPostClass, 1000);
 
